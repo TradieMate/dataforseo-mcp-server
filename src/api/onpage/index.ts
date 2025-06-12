@@ -39,18 +39,13 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
   );
   
   // OnPage Task Result Summary
-  registerTool(
-    server,
-    "onpage_summary",
-    z.object({
+  registerTool(server, "onpage_summary", {
       id: z.string().describe("Task ID")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.get<DataForSeoResponse<any>>(`/on_page/summary/${params.id}`);
       
       return response;
-    }
-  );
+    }, apiClient);
   
   // OnPage Task Result Pages
   registerTool(
@@ -96,21 +91,16 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
   );
   
   // OnPage Task Force Stop
-  registerTool(
-    server,
-    "onpage_task_force_stop",
-    z.object({
+  registerTool(server, "onpage_task_force_stop", {
       id: z.string().describe("Task ID")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/on_page/task_force_stop",
         [{ id: params.id }]
       );
       
       return response;
-    }
-  );
+    }, apiClient);
   
   // OnPage Duplicate Content
   registerTool(

@@ -66,36 +66,32 @@ export function registerLocalFalconTools(server: McpServer, config: LocalFalconC
   const client = new LocalFalconClient(config);
 
   // Local Falcon - Calculate Grid Points from Base Coordinate
-  registerTool(
-    server,
-    "localfalcon_calculate_grid_points",
-    z.object({
+  registerTool(server, "localfalcon_calculate_grid_points", {
       lat: z.number().describe("Base latitude coordinate"),
       lng: z.number().describe("Base longitude coordinate"),
       distance: z.number().describe("Distance between grid points (in miles or kilometers)"),
       units: z.enum(["miles", "kilometers"]).default("miles").describe("Distance unit"),
       points: z.number().min(1).max(100).default(20).describe("Number of grid points to calculate")
-    }),
-    async (params) => {
+    }, async (params) => {
       const response = await client.post<any>(
         "/v1/grid/",
         params
       );
       
       return response;
-    }
-  );
+    }, client as any
+  , apiClient)
   
   // Local Falcon - Search for Google My Business Locations
   registerTool(
     server,
     "localfalcon_search_gmb_locations",
-    z.object({
+    {
       query: z.string().describe("Search query for finding Google My Business locations"),
       lat: z.number().optional().describe("Optional latitude to center search around"),
       lng: z.number().optional().describe("Optional longitude to center search around"),
       include_sabs: z.boolean().default(true).describe("Include Service Area Businesses in results")
-    }),
+    },
     async (params) => {
       const response = await client.post<any>(
         "/v1/places/",
@@ -103,43 +99,40 @@ export function registerLocalFalconTools(server: McpServer, config: LocalFalconC
       );
       
       return response;
-    }
+    },
+    client as any
   );
   
   // Local Falcon - Get Business Ranking at Specific Coordinate Point
-  registerTool(
-    server,
-    "localfalcon_get_ranking_at_coordinate",
-    z.object({
+  registerTool(server, "localfalcon_get_ranking_at_coordinate", {
       lat: z.number().describe("Latitude for the search point"),
       lng: z.number().describe("Longitude for the search point"),
       keyword: z.string().describe("Search term to use"),
       place_id: z.string().describe("Google place ID to get ranking for"),
       language: z.string().optional().describe("Language code (e.g., 'en')"),
       country: z.string().optional().describe("Country code (e.g., 'us')")
-    }),
-    async (params) => {
+    }, async (params) => {
       const response = await client.post<any>(
         "/v1/result/",
         params
       );
       
       return response;
-    }
-  );
+    }, client as any
+  , apiClient)
   
   // Local Falcon - Keyword Search at a Specific Coordinate Point
   registerTool(
     server,
     "localfalcon_keyword_search_at_coordinate",
-    z.object({
+    {
       lat: z.number().describe("Latitude for the search point"),
       lng: z.number().describe("Longitude for the search point"),
       keyword: z.string().describe("Search term to use"),
       language: z.string().optional().describe("Language code (e.g., 'en')"),
       country: z.string().optional().describe("Country code (e.g., 'us')"),
       limit: z.number().min(1).max(20).default(20).optional().describe("Number of results to return")
-    }),
+    },
     async (params) => {
       const response = await client.post<any>(
         "/v1/search/",
@@ -147,14 +140,15 @@ export function registerLocalFalconTools(server: McpServer, config: LocalFalconC
       );
       
       return response;
-    }
+    },
+    client as any
   );
   
   // Local Falcon - Run a Full Grid Search
   registerTool(
     server,
     "localfalcon_run_grid_search",
-    z.object({
+    {
       lat: z.number().describe("Base latitude coordinate"),
       lng: z.number().describe("Base longitude coordinate"),
       keyword: z.string().describe("Search term to use"),
@@ -164,7 +158,7 @@ export function registerLocalFalconTools(server: McpServer, config: LocalFalconC
       points: z.number().min(1).max(100).default(20).describe("Number of grid points to use"),
       language: z.string().optional().describe("Language code (e.g., 'en')"),
       country: z.string().optional().describe("Country code (e.g., 'us')")
-    }),
+    },
     async (params) => {
       const response = await client.post<any>(
         "/v1/scan/",
@@ -172,6 +166,7 @@ export function registerLocalFalconTools(server: McpServer, config: LocalFalconC
       );
       
       return response;
-    }
+    },
+    client as any
   );
 }

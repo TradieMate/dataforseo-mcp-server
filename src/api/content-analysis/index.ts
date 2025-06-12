@@ -6,10 +6,7 @@ import { DataForSeoResponse } from "../types.js";
 
 export function registerContentAnalysisTools(server: McpServer, apiClient: DataForSeoClient) {
   // Content Analysis Summary
-  registerTool(
-    server,
-    "content_analysis_summary",
-    z.object({
+  registerTool(server, "content_analysis_summary", {
       url: z.string().describe("URL to analyze"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code"),
@@ -19,8 +16,7 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       calculate_keyword_density: z.boolean().optional().describe("Calculate keyword density"),
       calculate_information_score: z.boolean().optional().describe("Calculate information score"),
       calculate_adult_score: z.boolean().optional().describe("Calculate adult score")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_analysis/summary/live",
         [params]
@@ -28,7 +24,7 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       
       return response;
     }
-  );
+  , apiClient)
   
   // Content Analysis Search
   registerTool(
@@ -47,7 +43,7 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       calculate_adult_score: z.boolean().optional().describe("Calculate adult score"),
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_analysis/search/live",
@@ -59,15 +55,11 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
   );
   
   // Content Analysis Category
-  registerTool(
-    server,
-    "content_analysis_category",
-    z.object({
+  registerTool(server, "content_analysis_category", {
       url: z.string().describe("URL to categorize"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_analysis/category/live",
         [params]
@@ -75,7 +67,7 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       
       return response;
     }
-  );
+  , apiClient)
   
   // Content Analysis Sentiment Analysis
   registerTool(
@@ -85,7 +77,7 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       text: z.string().describe("Text to analyze"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_analysis/sentiment_analysis/live",
