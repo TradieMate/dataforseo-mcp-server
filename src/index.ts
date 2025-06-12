@@ -12,7 +12,7 @@ import { registerContentGenerationTools } from "./api/content-generation/index.j
 import { registerMerchantTools } from "./api/merchant/index.js";
 import { registerAppDataTools } from "./api/app-data/index.js";
 import { registerBusinessDataTools } from "./api/business-data/index.js";
-import { registerLocalFalconTools } from "./api/localfalcon/index.js";
+
 
 async function main() {
   // Get authentication credentials from environment variables
@@ -48,25 +48,7 @@ async function main() {
   registerBusinessDataTools(server, apiClient);
   
   // Register third-party API tools
-  
-  // Local Falcon API (optional integration)
-  const localFalconApiKey = process.env.LOCALFALCON_API_KEY;
-  if (localFalconApiKey) {
-    console.error("Local Falcon API key found - registering Local Falcon tools");
-    registerLocalFalconTools(server, {
-      apiKey: localFalconApiKey,
-      baseUrl: process.env.LOCALFALCON_API_URL // Optional, uses default if not provided
-    });
-  } else {
-    console.error("Local Falcon API key not found - skipping Local Falcon integration");
-    console.error("To enable, set the LOCALFALCON_API_KEY environment variable");
-  }
-  
-  // Add more third-party API integrations here
-  // Example:
-  // if (process.env.ANOTHER_SEO_TOOL_API_KEY) {
-  //   registerAnotherSeoToolTools(server, { apiKey: process.env.ANOTHER_SEO_TOOL_API_KEY });
-  // }
+  // Add more third-party API integrations here as needed
 
   // Start receiving messages on stdin and sending messages on stdout
   const transport = new StdioServerTransport();

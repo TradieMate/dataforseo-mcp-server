@@ -9,12 +9,12 @@ export function registerTool<T extends Record<string, z.ZodTypeAny>>(
   server: McpServer,
   name: string,
   schema: T,
-  handler: (params: z.infer<z.ZodObject<T>>, client: DataForSeoClient) => Promise<any>,
+  handler: (params: any, client: DataForSeoClient) => Promise<any>,
   apiClient: DataForSeoClient
 ) {
   server.tool(
     name,
-    schema,
+    `DataForSEO API tool: ${name}`,
     async (params) => {
       try {
         const result = await handler(params, apiClient);
@@ -67,7 +67,7 @@ export function registerTaskTool<PostT extends Record<string, z.ZodTypeAny>>(
   server: McpServer,
   baseName: string,
   postSchema: PostT,
-  postHandler: (params: z.infer<z.ZodObject<PostT>>, client: DataForSeoClient) => Promise<any>,
+  postHandler: (params: any, client: DataForSeoClient) => Promise<any>,
   readyHandler: (client: DataForSeoClient) => Promise<any>,
   getHandler: (id: string, client: DataForSeoClient) => Promise<any>,
   apiClient: DataForSeoClient

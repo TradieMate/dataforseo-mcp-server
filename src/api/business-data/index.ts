@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { DataForSeoClient } from "../client.js";
+import { DataForSeoClient } from "../client";
 import { registerTool } from "../tools.js";
 import { DataForSeoResponse } from "../types.js";
 
@@ -12,7 +12,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       location_code: z.number().optional().describe("Location code"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params, client) => {
+    }, async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/google/my_business_info/live",
         [params]
@@ -26,28 +26,29 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
   registerTool(
     server,
     "business_data_google_reviews",
-    z.object({
+    {
       keyword: z.string().optional().describe("Business name or related keyword"),
       place_id: z.string().optional().describe("Google Place ID"),
       depth: z.number().optional().describe("Number of reviews to retrieve"),
       sort_by: z.enum(["relevance", "newest"]).optional().describe("Sorting method"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, apiClient),
-    async (params, client) => {
+    },
+    async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/google/reviews/live",
         [params]
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // Business Data Google Locations
   registerTool(server, "business_data_google_locations", {
       country: z.string().optional().describe("Filter locations by country name")
-    }, async (params, client) => {
+    }, async (params) => {
       const url = params.country 
         ? `/business_data/google/locations?country=${encodeURIComponent(params.country)}`
         : "/business_data/google/locations";
@@ -55,19 +56,15 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       const response = await client.get<DataForSeoResponse<any>>(url);
       
       return response;
-    }, apiClient);
+    }, apiClient)
   
   // Business Data Google Languages
-  registerTool(
-    server,
-    "business_data_google_languages",
-    {},
-    async (_params, client) => {
+  registerTool(server, "business_data_google_languages", {}, async (_params) => {
       const response = await client.get<DataForSeoResponse<any>>("/business_data/google/languages");
       
       return response;
     }
-  );
+  , apiClient)
   
   // Business Data TripAdvisor Search
   registerTool(server, "business_data_tripadvisor_search", {
@@ -77,7 +74,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params, client) => {
+    }, async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/tripadvisor/search/live",
         [params]
@@ -91,22 +88,23 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
   registerTool(
     server,
     "business_data_tripadvisor_reviews",
-    z.object({
+    {
       location_id: z.string().describe("TripAdvisor location ID"),
       depth: z.number().optional().describe("Number of reviews to retrieve"),
       offset: z.number().optional().describe("Offset for pagination"),
       sort_by: z.enum(["relevance", "date_of_visit"]).optional().describe("Sorting method"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, apiClient),
-    async (params, client) => {
+    },
+    async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/tripadvisor/reviews/live",
         [params]
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // Business Data Trustpilot Search
@@ -118,7 +116,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       offset: z.number().optional().describe("Offset for pagination"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params, client) => {
+    }, async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/trustpilot/search/live",
         [params]
@@ -132,7 +130,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
   registerTool(
     server,
     "business_data_trustpilot_reviews",
-    z.object({
+    {
       domain: z.string().describe("Business domain"),
       depth: z.number().optional().describe("Number of reviews to retrieve"),
       offset: z.number().optional().describe("Offset for pagination"),
@@ -140,15 +138,16 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       sort_by: z.enum(["recency", "relevance"]).optional().describe("Sorting method"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, apiClient),
-    async (params, client) => {
+    },
+    async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/trustpilot/reviews/live",
         [params]
       );
       
       return response;
-    }
+    },
+    apiClient
   );
 
   // === ADDED SOCIAL MEDIA ENDPOINTS ===
@@ -160,7 +159,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params, client) => {
+    }, async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/facebook/search/live",
         [params]
@@ -174,19 +173,20 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
   registerTool(
     server,
     "business_data_facebook_overview",
-    z.object({
+    {
       id: z.string().describe("Facebook business ID"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, apiClient),
-    async (params, client) => {
+    },
+    async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/facebook/overview/live",
         [params]
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // Business Data Pinterest Search
@@ -195,7 +195,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params, client) => {
+    }, async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/pinterest/search/live",
         [params]
@@ -209,19 +209,20 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
   registerTool(
     server,
     "business_data_pinterest_info",
-    z.object({
+    {
       url: z.string().describe("Pinterest business URL"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, apiClient),
-    async (params, client) => {
+    },
+    async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/pinterest/info/live",
         [params]
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // Business Data Reddit Search
@@ -232,7 +233,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       offset: z.number().optional().describe("Offset for pagination"),
       sort_by: z.enum(["relevance", "hot", "top", "new"]).optional().describe("Sorting method"),
       search_type: z.enum(["communities", "posts"]).optional().describe("Type of search to perform")
-    }, async (params, client) => {
+    }, async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/reddit/search/live",
         [params]
@@ -246,19 +247,20 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
   registerTool(
     server,
     "business_data_reddit_info",
-    z.object({
+    {
       url: z.string().describe("Reddit URL (subreddit, post, etc.)"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, apiClient),
-    async (params, client) => {
+    },
+    async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/reddit/info/live",
         [params]
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // === GOOGLE HOTELS ENDPOINTS ===
@@ -277,7 +279,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       offset: z.number().optional().describe("Offset for pagination"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params, client) => {
+    }, async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/google/hotels/search/live",
         [params]
@@ -291,7 +293,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
   registerTool(
     server,
     "business_data_google_hotels_info",
-    z.object({
+    {
       hotel_id: z.string().describe("Google hotel ID"),
       location_name: z.string().optional().describe("Location name"),
       location_code: z.number().optional().describe("Location code"),
@@ -301,15 +303,16 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       currency: z.string().optional().describe("Currency code"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, apiClient),
-    async (params, client) => {
+    },
+    async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/google/hotels/info/live",
         [params]
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // Business Data Google Hotels Reviews
@@ -320,7 +323,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       sort_by: z.enum(["relevance", "newest"]).optional().describe("Sorting method"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params, client) => {
+    }, async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/google/hotels/reviews/live",
         [params]
@@ -336,7 +339,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
   registerTool(
     server,
     "business_data_business_listings_search",
-    z.object({
+    {
       keyword: z.string().describe("Business name or related keyword"),
       location_name: z.string().optional().describe("Location name"),
       location_code: z.number().optional().describe("Location code"),
@@ -345,21 +348,22 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       offset: z.number().optional().describe("Offset for pagination"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, apiClient),
-    async (params, client) => {
+    },
+    async (params) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/business_data/business_listings/search/live",
         [params]
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // Business Data Business Listings Categories
   registerTool(server, "business_data_business_listings_categories", {
       country: z.string().optional().describe("Filter categories by country")
-    }, async (params, client) => {
+    }, async (params) => {
       const url = params.country 
         ? `/business_data/business_listings/categories?country=${encodeURIComponent(params.country)}`
         : "/business_data/business_listings/categories";
@@ -367,12 +371,12 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       const response = await client.get<DataForSeoResponse<any>>(url);
       
       return response;
-    }, apiClient);
+    }, apiClient)
   
   // Business Data Business Listings Locations
   registerTool(server, "business_data_business_listings_locations", {
       country: z.string().optional().describe("Filter locations by country name")
-    }, async (params, client) => {
+    }, async (params) => {
       const url = params.country 
         ? `/business_data/business_listings/locations?country=${encodeURIComponent(params.country)}`
         : "/business_data/business_listings/locations";
@@ -380,5 +384,5 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       const response = await client.get<DataForSeoResponse<any>>(url);
       
       return response;
-    }, apiClient);
+    }, apiClient)
 }
