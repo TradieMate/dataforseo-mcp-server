@@ -10,12 +10,12 @@ import {
 } from "../types.js";
 
 // Backlinks API schemas
-const targetSchema = z.object({
+const targetSchema = {
   target: z.string().describe("Target domain, subdomain or URL to analyze"),
   limit: z.number().optional().describe("Maximum number of results to return"),
   offset: z.number().optional().describe("Offset for pagination"),
   filters: z.array(z.any()).optional().describe("Array of filter objects")
-});
+};
 
 export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoClient) {
   // Backlinks Summary
@@ -34,13 +34,9 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
   );
   
   // Backlinks List
-  registerTool(
-    server,
-    "backlinks_backlinks",
-    targetSchema.extend({
+  registerTool(server, "backlinks_backlinks", {...targetSchema,
       mode: z.enum(["as_is", "as_csv"]).optional().describe("Data presentation mode"),
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/backlinks/backlinks/live",
         [params]
@@ -48,7 +44,7 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
       
       return response;
     }
-  );
+  , apiClient)
   
   // Anchors
   registerTool(
@@ -62,8 +58,7 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
       );
       
       return response;
-    }
-  );
+    }, apiClient);
   
   // Backlinks Domain Pages
   registerTool(
@@ -126,16 +121,12 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
   );
   
   // Bulk Backlinks
-  registerTool(
-    server,
-    "backlinks_bulk_backlinks",
-    z.object({
+  registerTool(server, "backlinks_bulk_backlinks", {
       targets: z.array(z.string()).describe("List of targets to analyze (domains, subdomains, URLs)"),
       limit: z.number().optional().describe("Maximum number of results to return per target"),
       offset: z.number().optional().describe("Offset for pagination"),
       internal_list_limit: z.number().optional().describe("Maximum number of items in internal lists per target")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/backlinks/bulk_backlinks/live",
         [params]
@@ -143,7 +134,7 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
       
       return response;
     }
-  );
+  , apiClient)
   
   // Bulk Referring Domains
   registerTool(
@@ -154,7 +145,7 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
       limit: z.number().optional().describe("Maximum number of results to return per target"),
       offset: z.number().optional().describe("Offset for pagination"),
       internal_list_limit: z.number().optional().describe("Maximum number of items in internal lists per target")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/backlinks/bulk_referring_domains/live",
@@ -166,13 +157,9 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
   );
   
   // Bulk Spam Score
-  registerTool(
-    server,
-    "backlinks_bulk_spam_score",
-    z.object({
+  registerTool(server, "backlinks_bulk_spam_score", {
       targets: z.array(z.string()).describe("List of targets to analyze (domains, subdomains, URLs)")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/backlinks/bulk_spam_score/live",
         [params]
@@ -180,7 +167,7 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
       
       return response;
     }
-  );
+  , apiClient)
   
   // Bulk Rank Overview
   registerTool(
@@ -188,7 +175,7 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
     "backlinks_bulk_ranks",
     z.object({
       targets: z.array(z.string()).describe("List of targets to analyze (domains, subdomains, URLs)")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/backlinks/bulk_ranks/live",
@@ -215,16 +202,12 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
   );
   
   // Domain Intersection
-  registerTool(
-    server,
-    "backlinks_domain_intersection",
-    z.object({
+  registerTool(server, "backlinks_domain_intersection", {
       targets: z.array(z.string()).min(2).max(20).describe("List of domains to compare"),
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination"),
       exclude_targets: z.boolean().optional().describe("Whether to exclude the target domains from the results")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/backlinks/domain_intersection/live",
         [params]
@@ -232,7 +215,7 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
       
       return response;
     }
-  );
+  , apiClient)
   
   // Page Intersection
   registerTool(
@@ -243,7 +226,7 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination"),
       exclude_targets: z.boolean().optional().describe("Whether to exclude the target URLs from the results")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/backlinks/page_intersection/live",
@@ -258,10 +241,10 @@ export function registerBacklinksTools(server: McpServer, apiClient: DataForSeoC
   registerTool(
     server,
     "backlinks_timeseries_new_lost_summary",
-    targetSchema.extend({
+    {...targetSchema,
       date_from: z.string().describe("Start date in YYYY-MM-DD format"),
       date_to: z.string().describe("End date in YYYY-MM-DD format")
-    }),
+    },
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/backlinks/timeseries_new_lost_summary/live",

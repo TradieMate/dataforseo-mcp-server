@@ -6,10 +6,7 @@ import { DataForSeoResponse } from "../types.js";
 
 export function registerMerchantTools(server: McpServer, apiClient: DataForSeoClient) {
   // Merchant Google Search
-  registerTool(
-    server,
-    "merchant_google_search",
-    z.object({
+  registerTool(server, "merchant_google_search", {
       keyword: z.string().describe("Product name or related keyword"),
       location_name: z.string().optional().describe("Location name"),
       location_code: z.number().optional().describe("Location code"),
@@ -18,8 +15,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/merchant/google/search/live",
         [params]
@@ -27,7 +23,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       
       return response;
     }
-  );
+  , apiClient)
   
   // Merchant Google Product Specs
   registerTool(
@@ -39,7 +35,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       location_code: z.number().optional().describe("Location code"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/merchant/google/product_specs/live",
@@ -51,17 +47,13 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
   );
   
   // Merchant Google Product Info
-  registerTool(
-    server,
-    "merchant_google_product_info",
-    z.object({
+  registerTool(server, "merchant_google_product_info", {
       product_id: z.string().describe("Google Shopping Product ID"),
       location_name: z.string().optional().describe("Location name"),
       location_code: z.number().optional().describe("Location code"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/merchant/google/product_info/live",
         [params]
@@ -69,7 +61,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       
       return response;
     }
-  );
+  , apiClient)
   
   // Merchant Google Sellers
   registerTool(
@@ -81,7 +73,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       location_code: z.number().optional().describe("Location code"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/merchant/google/sellers/live",
@@ -93,10 +85,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
   );
   
   // Merchant Google Reviews
-  registerTool(
-    server,
-    "merchant_google_reviews",
-    z.object({
+  registerTool(server, "merchant_google_reviews", {
       product_id: z.string().describe("Google Shopping Product ID"),
       location_name: z.string().optional().describe("Location name"),
       location_code: z.number().optional().describe("Location code"),
@@ -104,8 +93,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       language_code: z.string().optional().describe("Language code"),
       depth: z.number().optional().describe("Number of reviews to retrieve"),
       offset: z.number().optional().describe("Offset for pagination")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/merchant/google/reviews/live",
         [params]
@@ -113,7 +101,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       
       return response;
     }
-  );
+  , apiClient)
   
   // Merchant Google Locations
   registerTool(
@@ -121,7 +109,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
     "merchant_google_locations",
     z.object({
       country: z.string().optional().describe("Filter locations by country name")
-    }),
+    }, apiClient),
     async (params, client) => {
       const url = params.country 
         ? `/merchant/google/locations?country=${encodeURIComponent(params.country)}`
@@ -146,10 +134,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
   );
   
   // Merchant Amazon Search
-  registerTool(
-    server,
-    "merchant_amazon_search",
-    z.object({
+  registerTool(server, "merchant_amazon_search", {
       keyword: z.string().describe("Product name or related keyword"),
       location_name: z.string().optional().describe("Location name"),
       location_code: z.number().optional().describe("Location code"),
@@ -158,8 +143,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/merchant/amazon/search/live",
         [params]
@@ -167,7 +151,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       
       return response;
     }
-  );
+  , apiClient)
   
   // Merchant Amazon Product Info
   registerTool(
@@ -179,7 +163,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       location_code: z.number().optional().describe("Location code"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/merchant/amazon/product_info/live",
@@ -191,10 +175,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
   );
   
   // Merchant Amazon Reviews
-  registerTool(
-    server,
-    "merchant_amazon_reviews",
-    z.object({
+  registerTool(server, "merchant_amazon_reviews", {
       asin: z.string().describe("Amazon ASIN"),
       location_name: z.string().optional().describe("Location name"),
       location_code: z.number().optional().describe("Location code"),
@@ -202,8 +183,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       language_code: z.string().optional().describe("Language code"),
       depth: z.number().optional().describe("Number of reviews to retrieve"),
       offset: z.number().optional().describe("Offset for pagination")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/merchant/amazon/reviews/live",
         [params]
@@ -211,7 +191,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       
       return response;
     }
-  );
+  , apiClient)
   
   // Merchant Amazon Locations
   registerTool(
@@ -219,7 +199,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
     "merchant_amazon_locations",
     z.object({
       country: z.string().optional().describe("Filter locations by country name")
-    }),
+    }, apiClient),
     async (params, client) => {
       const url = params.country 
         ? `/merchant/amazon/locations?country=${encodeURIComponent(params.country)}`

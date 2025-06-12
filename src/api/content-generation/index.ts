@@ -6,10 +6,7 @@ import { DataForSeoResponse } from "../types.js";
 
 export function registerContentGenerationTools(server: McpServer, apiClient: DataForSeoClient) {
   // Content Generation Generate Text
-  registerTool(
-    server,
-    "content_generation_text",
-    z.object({
+  registerTool(server, "content_generation_text", {
       topic: z.string().describe("Topic for the generated content"),
       creative_level: z.number().min(0).max(1).optional().describe("Creative level (0-1)"),
       language_code: z.string().optional().describe("Language code"),
@@ -19,8 +16,7 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
       writer_experience_level: z.enum(["expert", "beginner", "intermediate"]).optional().describe("Writer experience level"),
       subject_experience_level: z.enum(["expert", "beginner", "intermediate"]).optional().describe("Subject experience level"),
       text_format: z.enum(["plain", "html"]).optional().describe("Text format")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_generation/text/live",
         [params]
@@ -28,7 +24,7 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
       
       return response;
     }
-  );
+  , apiClient)
   
   // Content Generation Generate Paraphrase
   registerTool(
@@ -40,7 +36,7 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
       creative_level: z.number().min(0).max(1).optional().describe("Creative level (0-1)"),
       language_code: z.string().optional().describe("Language code"),
       language_name: z.string().optional().describe("Language name")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_generation/paraphrase/live",
@@ -52,17 +48,13 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
   );
   
   // Content Generation Generate Meta Tags
-  registerTool(
-    server,
-    "content_generation_meta_tags",
-    z.object({
+  registerTool(server, "content_generation_meta_tags", {
       text: z.string().optional().describe("Text to generate meta tags from"),
       url: z.string().optional().describe("URL to extract text from"),
       language_code: z.string().optional().describe("Language code"),
       language_name: z.string().optional().describe("Language name"),
       creative_level: z.number().min(0).max(1).optional().describe("Creative level (0-1)")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_generation/meta_tags/live",
         [params]
@@ -70,7 +62,7 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
       
       return response;
     }
-  );
+  , apiClient)
   
   // Content Generation Generate Summarize
   registerTool(
@@ -82,7 +74,7 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
       language_code: z.string().optional().describe("Language code"),
       language_name: z.string().optional().describe("Language name"),
       summary_size: z.enum(["small", "medium", "large"]).optional().describe("Summary size")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_generation/summarize/live",
@@ -94,17 +86,13 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
   );
   
   // Content Generation Generate Title
-  registerTool(
-    server,
-    "content_generation_title",
-    z.object({
+  registerTool(server, "content_generation_title", {
       text: z.string().optional().describe("Text to generate title from"),
       url: z.string().optional().describe("URL to extract text from"),
       language_code: z.string().optional().describe("Language code"),
       language_name: z.string().optional().describe("Language name"),
       creative_level: z.number().min(0).max(1).optional().describe("Creative level (0-1)")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_generation/title/live",
         [params]
@@ -112,7 +100,7 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
       
       return response;
     }
-  );
+  , apiClient)
   
   // Content Generation Explain Code
   registerTool(
@@ -124,7 +112,7 @@ export function registerContentGenerationTools(server: McpServer, apiClient: Dat
       language_name: z.string().optional().describe("Language name"),
       code_language: z.string().optional().describe("Programming language of the code"),
       explanation_type: z.enum(["line_by_line", "function", "block"]).optional().describe("Type of explanation")
-    }),
+    }, apiClient),
     async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/content_generation/explain_code/live",

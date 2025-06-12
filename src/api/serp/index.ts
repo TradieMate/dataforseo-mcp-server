@@ -10,7 +10,7 @@ import {
 } from "../types.js";
 
 // SERP Google Organic API schemas
-const googleOrganicLiveSchema = z.object({
+const googleOrganicLiveSchema = {
   keyword: z.string().describe("The search query or keyword"),
   location_code: z.number().describe("The location code for the search"),
   language_code: z.string().describe("The language code for the search"),
@@ -18,14 +18,15 @@ const googleOrganicLiveSchema = z.object({
   os: z.enum(["windows", "macos", "ios", "android"]).optional().describe("The operating system for the search"),
   depth: z.number().optional().describe("Maximum number of results to return"),
   se_domain: z.string().optional().describe("Search engine domain (e.g., google.com)")
-});
+};
 
-const googleOrganicTaskSchema = googleOrganicLiveSchema.extend({
+const googleOrganicTaskSchema = {
+  ...googleOrganicLiveSchema,
   priority: z.number().min(1).max(2).optional().describe("Task priority: 1 (normal) or 2 (high)"),
   tag: z.string().optional().describe("Custom identifier for the task"),
   postback_url: z.string().optional().describe("URL to receive a callback when the task is completed"),
   postback_data: z.string().optional().describe("Custom data to be passed in the callback")
-});
+};
 
 // Google Organic Types
 interface GoogleOrganicLiveResult {
@@ -60,7 +61,8 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // Google Organic Task-based (POST, READY, GET)
@@ -89,17 +91,14 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
       );
       
       return response;
-    }
+    },
+    apiClient
   );
   
   // Google Maps Live
-  registerTool(
-    server,
-    "serp_google_maps_live",
-    googleOrganicLiveSchema.extend({
+  registerTool(server, "serp_google_maps_live", {...googleOrganicLiveSchema,
       local_pack_type: z.enum(["maps", "local_pack"]).optional().describe("Type of local pack results")
-    }),
-    async (params, client) => {
+    }, async (params, client) => {
       const response = await client.post<DataForSeoResponse<any>>(
         "/serp/google/maps/live",
         [params]
@@ -107,7 +106,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
       
       return response;
     }
-  );
+  , apiClient)
   
   // Google Images Live
   registerTool(
@@ -121,8 +120,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
       );
       
       return response;
-    }
-  );
+    }, apiClient);
   
   // Google News Live
   registerTool(
@@ -230,13 +228,9 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
   );
   
   // SERP API Locations
-  registerTool(
-    server,
-    "serp_google_locations",
-    {
+  registerTool(server, "serp_google_locations", {
       country: z.string().optional().describe("Filter locations by country name")
-    },
-    async (params, client) => {
+    }, async (params, client) => {
       const url = params.country 
         ? `/serp/google/locations?country=${encodeURIComponent(params.country)}`
         : "/serp/google/locations";
@@ -244,8 +238,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
       const response = await client.get<DataForSeoResponse<any>>(url);
       
       return response;
-    }
-  );
+    }, apiClient);
   
   // SERP API Languages
   registerTool(
