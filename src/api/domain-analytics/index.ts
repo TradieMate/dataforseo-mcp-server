@@ -10,8 +10,8 @@ export function registerDomainAnalyticsTools(server: McpServer, apiClient: DataF
       technology_name: z.string().optional().describe("Filter results by technology name"),
       technology_group: z.string().optional().describe("Filter results by technology group"),
       category: z.string().optional().describe("Filter results by category")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/domain_analytics/technologies/summary/live",
         [params]
       );
@@ -29,8 +29,8 @@ export function registerDomainAnalyticsTools(server: McpServer, apiClient: DataF
       technology_group: z.string().optional().describe("Filter results by technology group"),
       category: z.string().optional().describe("Filter results by category")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/domain_analytics/technologies/technologies/live",
         [params]
       );
@@ -47,8 +47,8 @@ export function registerDomainAnalyticsTools(server: McpServer, apiClient: DataF
       category: z.string().optional().describe("Filter results by category"),
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/domain_analytics/technologies/domains_by_technology/live",
         [params]
       );
@@ -66,8 +66,8 @@ export function registerDomainAnalyticsTools(server: McpServer, apiClient: DataF
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/domain_analytics/technologies/domain_technologies/live",
         [params]
       );
@@ -82,8 +82,8 @@ export function registerDomainAnalyticsTools(server: McpServer, apiClient: DataF
       technology_name: z.string().describe("Technology name to get stats for"),
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/domain_analytics/technologies/technology_stats/live",
         [params]
       );
@@ -102,8 +102,8 @@ export function registerDomainAnalyticsTools(server: McpServer, apiClient: DataF
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/domain_analytics/technologies/domains_by_html_terms/live",
         [params]
       );
@@ -120,8 +120,8 @@ export function registerDomainAnalyticsTools(server: McpServer, apiClient: DataF
     {
       domain: z.string().describe("Domain to get WHOIS information for")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/domain_analytics/whois/overview/live",
         [params]
       );

@@ -15,8 +15,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/merchant/google/search/live",
         [params]
       );
@@ -36,8 +36,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/merchant/google/product_specs/live",
         [params]
       );
@@ -54,8 +54,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       location_code: z.number().optional().describe("Location code"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/merchant/google/product_info/live",
         [params]
       );
@@ -75,8 +75,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/merchant/google/sellers/live",
         [params]
       );
@@ -95,8 +95,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       language_code: z.string().optional().describe("Language code"),
       depth: z.number().optional().describe("Number of reviews to retrieve"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/merchant/google/reviews/live",
         [params]
       );
@@ -117,7 +117,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
         ? `/merchant/google/locations?country=${encodeURIComponent(params.country)}`
         : "/merchant/google/locations";
         
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     },
@@ -125,8 +125,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
   );
   
   // Merchant Google Languages
-  registerTool(server, "merchant_google_languages", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/merchant/google/languages");
+  registerTool(server, "merchant_google_languages", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/merchant/google/languages");
       
       return response;
     }
@@ -142,8 +142,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/merchant/amazon/search/live",
         [params]
       );
@@ -163,8 +163,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/merchant/amazon/product_info/live",
         [params]
       );
@@ -183,8 +183,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
       language_code: z.string().optional().describe("Language code"),
       depth: z.number().optional().describe("Number of reviews to retrieve"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/merchant/amazon/reviews/live",
         [params]
       );
@@ -205,7 +205,7 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
         ? `/merchant/amazon/locations?country=${encodeURIComponent(params.country)}`
         : "/merchant/amazon/locations";
         
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     },
@@ -213,8 +213,8 @@ export function registerMerchantTools(server: McpServer, apiClient: DataForSeoCl
   );
   
   // Merchant Amazon Languages
-  registerTool(server, "merchant_amazon_languages", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/merchant/amazon/languages");
+  registerTool(server, "merchant_amazon_languages", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/merchant/amazon/languages");
       
       return response;
     }

@@ -10,8 +10,8 @@ export function registerKeywordsTools(server: McpServer, apiClient: DataForSeoCl
       keyword: z.string().describe("Keyword to get data for"),
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search"),
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/keywords_data/google_ads/keywords_for_keywords/live",
         [params]
       );
@@ -29,8 +29,8 @@ export function registerKeywordsTools(server: McpServer, apiClient: DataForSeoCl
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search"),
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/keywords_data/google_ads/keywords_for_site/live",
         [params]
       );
@@ -45,8 +45,8 @@ export function registerKeywordsTools(server: McpServer, apiClient: DataForSeoCl
       keywords: z.array(z.string()).describe("Keywords to get search volume for"),
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search"),
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/keywords_data/google_ads/search_volume/live",
         [params]
       );
@@ -67,7 +67,7 @@ export function registerKeywordsTools(server: McpServer, apiClient: DataForSeoCl
         ? `/keywords_data/google_ads/locations?country=${encodeURIComponent(params.country)}`
         : "/keywords_data/google_ads/locations";
         
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     },
@@ -75,16 +75,16 @@ export function registerKeywordsTools(server: McpServer, apiClient: DataForSeoCl
   );
   
   // Google Ads Keywords Languages
-  registerTool(server, "keywords_google_ads_languages", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/keywords_data/google_ads/languages");
+  registerTool(server, "keywords_google_ads_languages", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/keywords_data/google_ads/languages");
       
       return response;
     }
   , apiClient)
   
   // Google Ads Keywords Categories
-  registerTool(server, "keywords_google_ads_categories", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/keywords_data/google_ads/categories");
+  registerTool(server, "keywords_google_ads_categories", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/keywords_data/google_ads/categories");
       
       return response;
     }
@@ -98,8 +98,8 @@ export function registerKeywordsTools(server: McpServer, apiClient: DataForSeoCl
       date_from: z.string().optional().describe("Start date in YYYY-MM-DD format"),
       date_to: z.string().optional().describe("End date in YYYY-MM-DD format"),
       category_code: z.number().optional().describe("Google Trends category code")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/keywords_data/google_trends/explore/live",
         [params]
       );
@@ -117,8 +117,8 @@ export function registerKeywordsTools(server: McpServer, apiClient: DataForSeoCl
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search"),
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/keywords_data/bing/keywords_for_keywords/live",
         [params]
       );

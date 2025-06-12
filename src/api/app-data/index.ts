@@ -15,8 +15,8 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/app_data/google_play/search/live",
         [params]
       );
@@ -36,8 +36,8 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/app_data/google_play/app_info/live",
         [params]
       );
@@ -58,8 +58,8 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
       sort_by: z.enum(["most_relevant", "newest"]).optional().describe("Sorting method"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/app_data/google_play/reviews/live",
         [params]
       );
@@ -80,7 +80,7 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
         ? `/app_data/google_play/locations?country=${encodeURIComponent(params.country)}`
         : "/app_data/google_play/locations";
         
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     },
@@ -88,8 +88,8 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
   );
   
   // App Data Google Play Languages
-  registerTool(server, "app_data_google_play_languages", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/app_data/google_play/languages");
+  registerTool(server, "app_data_google_play_languages", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/app_data/google_play/languages");
       
       return response;
     }
@@ -105,8 +105,8 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/app_data/apple/search/live",
         [params]
       );
@@ -126,8 +126,8 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/app_data/apple/app_info/live",
         [params]
       );
@@ -148,8 +148,8 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
       sort_by: z.enum(["most_relevant", "most_recent"]).optional().describe("Sorting method"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/app_data/apple/reviews/live",
         [params]
       );
@@ -170,7 +170,7 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
         ? `/app_data/apple/locations?country=${encodeURIComponent(params.country)}`
         : "/app_data/apple/locations";
         
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     },
@@ -178,8 +178,8 @@ export function registerAppDataTools(server: McpServer, apiClient: DataForSeoCli
   );
   
   // App Data App Store Languages
-  registerTool(server, "app_data_app_store_languages", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/app_data/apple/languages");
+  registerTool(server, "app_data_app_store_languages", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/app_data/apple/languages");
       
       return response;
     }

@@ -12,8 +12,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       location_code: z.number().optional().describe("Location code"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/google/my_business_info/live",
         [params]
       );
@@ -34,8 +34,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/google/reviews/live",
         [params]
       );
@@ -53,14 +53,14 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
         ? `/business_data/google/locations?country=${encodeURIComponent(params.country)}`
         : "/business_data/google/locations";
         
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     }, apiClient)
   
   // Business Data Google Languages
-  registerTool(server, "business_data_google_languages", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/business_data/google/languages");
+  registerTool(server, "business_data_google_languages", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/business_data/google/languages");
       
       return response;
     }
@@ -74,8 +74,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/tripadvisor/search/live",
         [params]
       );
@@ -96,8 +96,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/tripadvisor/reviews/live",
         [params]
       );
@@ -116,8 +116,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       offset: z.number().optional().describe("Offset for pagination"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/trustpilot/search/live",
         [params]
       );
@@ -139,8 +139,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/trustpilot/reviews/live",
         [params]
       );
@@ -159,8 +159,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/facebook/search/live",
         [params]
       );
@@ -178,8 +178,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/facebook/overview/live",
         [params]
       );
@@ -195,8 +195,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       depth: z.number().optional().describe("Number of results to return"),
       limit: z.number().optional().describe("Maximum number of results to return per page"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/pinterest/search/live",
         [params]
       );
@@ -214,8 +214,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/pinterest/info/live",
         [params]
       );
@@ -233,8 +233,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       offset: z.number().optional().describe("Offset for pagination"),
       sort_by: z.enum(["relevance", "hot", "top", "new"]).optional().describe("Sorting method"),
       search_type: z.enum(["communities", "posts"]).optional().describe("Type of search to perform")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/reddit/search/live",
         [params]
       );
@@ -252,8 +252,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/reddit/info/live",
         [params]
       );
@@ -279,8 +279,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       offset: z.number().optional().describe("Offset for pagination"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/google/hotels/search/live",
         [params]
       );
@@ -304,8 +304,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/google/hotels/info/live",
         [params]
       );
@@ -323,8 +323,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       sort_by: z.enum(["relevance", "newest"]).optional().describe("Sorting method"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/google/hotels/reviews/live",
         [params]
       );
@@ -349,8 +349,8 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/business_data/business_listings/search/live",
         [params]
       );
@@ -368,7 +368,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
         ? `/business_data/business_listings/categories?country=${encodeURIComponent(params.country)}`
         : "/business_data/business_listings/categories";
       
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     }, apiClient)
@@ -381,7 +381,7 @@ export function registerBusinessDataTools(server: McpServer, apiClient: DataForS
         ? `/business_data/business_listings/locations?country=${encodeURIComponent(params.country)}`
         : "/business_data/business_listings/locations";
       
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     }, apiClient)

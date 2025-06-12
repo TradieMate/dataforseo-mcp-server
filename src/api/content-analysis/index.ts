@@ -16,8 +16,8 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       calculate_keyword_density: z.boolean().optional().describe("Calculate keyword density"),
       calculate_information_score: z.boolean().optional().describe("Calculate information score"),
       calculate_adult_score: z.boolean().optional().describe("Calculate adult score")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/content_analysis/summary/live",
         [params]
       );
@@ -44,8 +44,8 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/content_analysis/search/live",
         [params]
       );
@@ -60,8 +60,8 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       url: z.string().describe("URL to categorize"),
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/content_analysis/category/live",
         [params]
       );
@@ -79,8 +79,8 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       language_name: z.string().optional().describe("Language name"),
       language_code: z.string().optional().describe("Language code")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/content_analysis/sentiment_analysis/live",
         [params]
       );
@@ -98,8 +98,8 @@ export function registerContentAnalysisTools(server: McpServer, apiClient: DataF
       rating_values: z.array(z.number()).describe("Array of rating values"),
       algo: z.enum(["percentile", "linear", "exponential"]).optional().describe("Algorithm for distribution calculation")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/content_analysis/rating_distribution/live",
         [params]
       );

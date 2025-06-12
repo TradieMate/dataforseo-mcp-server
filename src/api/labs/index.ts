@@ -26,8 +26,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // Keywords for Site
   registerTool(server, "labs_google_keywords_for_site", {...domainResearchBaseSchema,
       include_serp_info: z.boolean().optional().describe("Include SERP information")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/keywords_for_site/live",
         [params]
       );
@@ -42,7 +42,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
     "labs_google_related_keywords",
     keywordResearchBaseSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/related_keywords/live",
         [params]
       );
@@ -58,7 +58,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
     "labs_google_keyword_suggestions",
     keywordResearchBaseSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/keyword_suggestions/live",
         [params]
       );
@@ -74,7 +74,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
     "labs_google_keyword_ideas",
     keywordResearchBaseSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/keyword_ideas/live",
         [params]
       );
@@ -90,8 +90,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search"),
       include_serp_info: z.boolean().optional().describe("Include SERP information")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/historical_search_volume/live",
         [params]
       );
@@ -109,8 +109,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/bulk_keyword_difficulty/live",
         [params]
       );
@@ -125,8 +125,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       keywords: z.array(z.string()).describe("Keywords to determine search intent"),
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/search_intent/live",
         [params]
       );
@@ -141,7 +141,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
     "labs_google_categories_for_domain",
     domainResearchBaseSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/categories_for_domain/live",
         [params]
       );
@@ -157,7 +157,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
     "labs_google_domain_rank_overview",
     domainResearchBaseSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/domain_rank_overview/live",
         [params]
       );
@@ -171,8 +171,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   registerTool(server, "labs_google_ranked_keywords", {...domainResearchBaseSchema,
       include_serp_info: z.boolean().optional().describe("Include SERP information"),
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/ranked_keywords/live",
         [params]
       );
@@ -184,8 +184,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // Competitors Domain
   registerTool(server, "labs_google_competitors_domain", {...domainResearchBaseSchema,
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/competitors_domain/live",
         [params]
       );
@@ -206,8 +206,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       offset: z.number().optional().describe("Offset for pagination"),
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/domain_intersection/live",
         [params]
       );
@@ -220,8 +220,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // Subdomains
   registerTool(server, "labs_google_subdomains", {...domainResearchBaseSchema,
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/subdomains/live",
         [params]
       );
@@ -233,8 +233,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // Relevant Pages
   registerTool(server, "labs_google_relevant_pages", {...domainResearchBaseSchema,
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/relevant_pages/live",
         [params]
       );
@@ -248,8 +248,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       targets: z.array(z.string()).describe("Domains to estimate traffic for"),
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google/bulk_traffic_estimation/live",
         [params]
       );
@@ -269,8 +269,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       location_code: z.number().optional().describe("The location code for the search"),
       language_code: z.string().optional().describe("The language code for the search")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/amazon/bulk_search_volume/live",
         [params]
       );
@@ -283,8 +283,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // Amazon Related Keywords
   registerTool(server, "labs_amazon_related_keywords", {...keywordResearchBaseSchema,
       marketplace: z.string().optional().describe("Amazon marketplace (e.g., amazon.com)")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/amazon/related_keywords/live",
         [params]
       );
@@ -302,8 +302,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination"),
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/amazon/ranked_keywords/live",
         [params]
       );
@@ -324,8 +324,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/amazon/product_competitors/live",
         [params]
       );
@@ -340,8 +340,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // Bing Keywords for Site
   registerTool(server, "labs_bing_keywords_for_site", {...domainResearchBaseSchema,
       include_serp_info: z.boolean().optional().describe("Include SERP information")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/bing/keywords_for_site/live",
         [params]
       );
@@ -356,7 +356,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
     "labs_bing_related_keywords",
     keywordResearchBaseSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/bing/related_keywords/live",
         [params]
       );
@@ -372,7 +372,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
     "labs_bing_domain_rank_overview",
     domainResearchBaseSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/bing/domain_rank_overview/live",
         [params]
       );
@@ -386,8 +386,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   registerTool(server, "labs_bing_ranked_keywords", {...domainResearchBaseSchema,
       include_serp_info: z.boolean().optional().describe("Include SERP information"),
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/bing/ranked_keywords/live",
         [params]
       );
@@ -399,8 +399,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // Bing Competitors Domain
   registerTool(server, "labs_bing_competitors_domain", {...domainResearchBaseSchema,
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/bing/competitors_domain/live",
         [params]
       );
@@ -422,8 +422,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google_play/keywords_for_app/live",
         [params]
       );
@@ -436,8 +436,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // Google Play Ranked Apps
   registerTool(server, "labs_google_play_ranked_apps", {...keywordResearchBaseSchema,
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google_play/ranked_apps/live",
         [params]
       );
@@ -453,8 +453,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       language_code: z.string().optional().describe("The language code for the search"),
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/google_play/app_competitors/live",
         [params]
       );
@@ -474,8 +474,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/app_store/keywords_for_app/live",
         [params]
       );
@@ -488,8 +488,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
   // App Store Ranked Apps
   registerTool(server, "labs_app_store_ranked_apps", {...keywordResearchBaseSchema,
       filters: z.array(z.any()).optional().describe("Filters to apply to the results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/app_store/ranked_apps/live",
         [params]
       );
@@ -505,8 +505,8 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       language_code: z.string().optional().describe("The language code for the search"),
       limit: z.number().optional().describe("Maximum number of results to return"),
       offset: z.number().optional().describe("Offset for pagination")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/dataforseo_labs/app_store/app_competitors/live",
         [params]
       );
@@ -539,7 +539,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       }
       
       const fullUrl = queryParams.length > 0 ? `${url}?${queryParams.join('&')}` : url;
-      const response = await client.get<DataForSeoResponse<any>>(fullUrl);
+      const response = await apiClient.get<DataForSeoResponse<any>>(fullUrl);
       
       return response;
     },
@@ -563,7 +563,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       }
       
       const fullUrl = queryParams.length > 0 ? `${url}?${queryParams.join('&')}` : url;
-      const response = await client.get<DataForSeoResponse<any>>(fullUrl);
+      const response = await apiClient.get<DataForSeoResponse<any>>(fullUrl);
       
       return response;
     },
@@ -575,7 +575,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
       engine: z.enum(["google", "amazon", "bing", "google_play", "app_store"]).describe("Engine to get languages for")
     }, async (params) => {
       const url = `/dataforseo_labs/${params.engine}/languages`;
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     }, apiClient)
@@ -590,7 +590,7 @@ export function registerLabsTools(server: McpServer, apiClient: DataForSeoClient
     },
     async (params) => {
       const url = `/dataforseo_labs/${params.engine}/available_history/${params.function}`;
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     },

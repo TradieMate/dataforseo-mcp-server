@@ -16,8 +16,8 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
       enable_javascript: z.boolean().optional().describe("Enable JavaScript execution"),
       limit: z.number().optional().describe("Maximum number of results to return")
     },
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/on_page/task_post",
         [params]
       );
@@ -28,8 +28,8 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
   );
   
   // OnPage Tasks Ready
-  registerTool(server, "onpage_tasks_ready", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/on_page/tasks_ready");
+  registerTool(server, "onpage_tasks_ready", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/on_page/tasks_ready");
       
       return response;
     }
@@ -38,8 +38,8 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
   // OnPage Task Result Summary
   registerTool(server, "onpage_summary", {
       id: z.string().describe("Task ID")
-    }, async (params) => {
-      const response = await client.get<DataForSeoResponse<any>>(`/on_page/summary/${params.id}`);
+    }, async (params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>(`/on_page/summary/${params.id}`);
       
       return response;
     }, apiClient)
@@ -56,7 +56,7 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
     },
     async (params) => {
       const { id, ...restParams } = params;
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         `/on_page/pages/${id}`,
         [restParams]
       );
@@ -79,7 +79,7 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
     },
     async (params) => {
       const { id, ...restParams } = params;
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         `/on_page/resources/${id}`,
         [restParams]
       );
@@ -92,8 +92,8 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
   // OnPage Task Force Stop
   registerTool(server, "onpage_task_force_stop", {
       id: z.string().describe("Task ID")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/on_page/task_force_stop",
         [{ id: params.id }]
       );
@@ -112,7 +112,7 @@ export function registerOnPageTools(server: McpServer, apiClient: DataForSeoClie
     },
     async (params) => {
       const { id, ...restParams } = params;
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         `/on_page/duplicate_content/${id}`,
         [restParams]
       );

@@ -54,8 +54,8 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     server,
     "serp_google_organic_live",
     googleOrganicLiveSchema,
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<GoogleOrganicLiveResult>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<GoogleOrganicLiveResult>>(
         "/serp/google/organic/live",
         [params]
       );
@@ -70,8 +70,8 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     server,
     "serp_google_organic_task",
     googleOrganicTaskSchema,
-    async (params) => {
-      const response = await client.post<DataForSeoResponse<TaskPostResponse>>(
+    async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<TaskPostResponse>>(
         "/serp/google/organic/task_post",
         [params]
       );
@@ -79,14 +79,14 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
       return response;
     },
     async (client) => {
-      const response = await client.get<DataForSeoResponse<TaskReadyResponse>>(
+      const response = await apiClient.get<DataForSeoResponse<TaskReadyResponse>>(
         "/serp/google/organic/tasks_ready"
       );
       
       return response;
     },
     async (id) => {
-      const response = await client.get<DataForSeoResponse<TaskGetResponse<GoogleOrganicTaskResult>>>(
+      const response = await apiClient.get<DataForSeoResponse<TaskGetResponse<GoogleOrganicTaskResult>>>(
         `/serp/google/organic/task_get/${id}`
       );
       
@@ -98,8 +98,8 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
   // Google Maps Live
   registerTool(server, "serp_google_maps_live", {...googleOrganicLiveSchema,
       local_pack_type: z.enum(["maps", "local_pack"]).optional().describe("Type of local pack results")
-    }, async (params) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+    }, async (params, client) => {
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/google/maps/live",
         [params]
       );
@@ -114,7 +114,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     "serp_google_images_live",
     googleOrganicLiveSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/google/images/live",
         [params]
       );
@@ -130,7 +130,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     "serp_google_news_live",
     googleOrganicLiveSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/google/news/live",
         [params]
       );
@@ -146,7 +146,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     "serp_google_jobs_live",
     googleOrganicLiveSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/google/jobs/live",
         [params]
       );
@@ -162,7 +162,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     "serp_google_shopping_live",
     googleOrganicLiveSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/google/shopping/live",
         [params]
       );
@@ -178,7 +178,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     "serp_bing_organic_live",
     googleOrganicLiveSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/bing/organic/live",
         [params]
       );
@@ -194,7 +194,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     "serp_yahoo_organic_live",
     googleOrganicLiveSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/yahoo/organic/live",
         [params]
       );
@@ -210,7 +210,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     "serp_baidu_organic_live",
     googleOrganicLiveSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/baidu/organic/live",
         [params]
       );
@@ -226,7 +226,7 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
     "serp_youtube_organic_live",
     googleOrganicLiveSchema,
     async (params, apiClient) => {
-      const response = await client.post<DataForSeoResponse<any>>(
+      const response = await apiClient.post<DataForSeoResponse<any>>(
         "/serp/youtube/organic/live",
         [params]
       );
@@ -244,14 +244,14 @@ export function registerSerpTools(server: McpServer, apiClient: DataForSeoClient
         ? `/serp/google/locations?country=${encodeURIComponent(params.country)}`
         : "/serp/google/locations";
         
-      const response = await client.get<DataForSeoResponse<any>>(url);
+      const response = await apiClient.get<DataForSeoResponse<any>>(url);
       
       return response;
     }, apiClient)
   
   // SERP API Languages
-  registerTool(server, "serp_google_languages", {}, async (_params) => {
-      const response = await client.get<DataForSeoResponse<any>>("/serp/google/languages");
+  registerTool(server, "serp_google_languages", {}, async (_params, client) => {
+      const response = await apiClient.get<DataForSeoResponse<any>>("/serp/google/languages");
       
       return response;
     }
